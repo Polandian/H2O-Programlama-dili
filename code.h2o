@@ -1,0 +1,24 @@
+yazdir "Bu program h2o adli dilde yazilmistir"
+yazdir "-------------------------------------"
+
+yeniSatir
+
+
+dosyayaYaz "hello""naber"
+dosyayaEkle "hello""tanisalim mi"
+
+yeniSatir
+
+dosyaOku "hello"
+satirOku "hello""2"
+
+yeniSatir
+yeniSatir
+
+sayi buSayi "12"
+yazdir ";buSayi;"
+
+yazi buYazi "nabers"
+yazdir ";buYazi;"
+
+cikis
