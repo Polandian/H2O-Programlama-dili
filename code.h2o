@@ -1,10 +1,13 @@
 yazdir "Bu program h2o adli dilde yazilmistir"
 yazdir "-------------------------------------"
 
+deger ilkSayi "12"
+deger ikinciSayi "24"
+yazdir ";ilkSayi; + ;ikinciSayi; + ;dosya;"
+
 yeniSatir
 
 deger dosya "hello"
-
 dosyayaYaz  ";dosya;" "naber"
 dosyayaEkle ";dosya;" "tanisalim mi"
 
@@ -21,5 +24,3 @@ yazdir ";buSayi;"
 
 deger buYazi "nabers"
 yazdir ";buYazi;"
-
-cikis
