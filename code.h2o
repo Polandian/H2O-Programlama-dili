@@ -3,7 +3,7 @@ yazdir "-------------------------------------"
 
 deger ilkSayi "12"
 deger ikinciSayi "24"
-yazdir ";ilkSayi; + ;ikinciSayi; + ;dosya;"
+yazdir ";ilkSayi; + ;ikinciSayi;"
 
 yeniSatir
 
