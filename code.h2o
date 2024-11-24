@@ -3,22 +3,23 @@ yazdir "-------------------------------------"
 
 yeniSatir
 
+deger dosya "hello"
 
-dosyayaYaz "hello""naber"
-dosyayaEkle "hello""tanisalim mi"
-
-yeniSatir
-
-dosyaOku "hello"
-satirOku "hello""2"
+dosyayaYaz  ";dosya;" "naber"
+dosyayaEkle ";dosya;" "tanisalim mi"
 
 yeniSatir
+
+dosyaOku ";dosya;"
+satirOku ";dosya;""2"
+
+yeniSatir
 yeniSatir
 
-sayi buSayi "12"
+deger buSayi "12"
 yazdir ";buSayi;"
 
-yazi buYazi "nabers"
+deger buYazi "nabers"
 yazdir ";buYazi;"
 
 cikis
