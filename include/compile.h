@@ -5,19 +5,12 @@
 #include <stdbool.h>
 
 void COMPILE(char *compileFile){
-    system("cls");
     FILE *file = fopen(compileFile, "r"); 
     if(file == NULL || strcmp(get_filename_ext(compileFile), "h2o") != 0){
         system("cls");
         CLOSE_APP(FILE_NOT_FOUND_ERROR, 1);
     }
     else{
-        unsigned short lineAmount = 0; //lines amount
-        unsigned short varAmount = 0; //variables that user created amount 
-
-        static char varNames[BUFFER_SIZE][BUFFER_SIZE];  //variables that user create
-        static char varValues[BUFFER_SIZE][BUFFER_SIZE]; //value of them ↑
-
         char currentLine[BUFFER_SIZE]; //array to store entire text of currentLine
 
         int currentLineChar;
@@ -41,7 +34,7 @@ void COMPILE(char *compileFile){
             }
             readFunc[0] = ' ';
 
-            char readStr[BUFFER_SIZE]; //array to store current string
+            char readStr[BUFFER_SIZE];
             for(int j = 0; j < 100; j++){
                 readStr[j] = '\0'; //clear readFunc
             }
@@ -53,52 +46,63 @@ void COMPILE(char *compileFile){
             }
             readFileName[0] = ' ';
 
-            char readVar[50];
-            for(int h = 0; h < 50; h++){
-                readVar[h] = '\0';
+            int b = 0;
+            int s = 0;
+            int k = 0; /*değer okuyucu*/
+            for(; b < strlen(currentLine); b++){
+                if(currentLine[b] == ';'){
+                    s++;
+                }
             }
-            readVar[0] = ' ';
-            int hn = 0;
-            int nh = 1;
+            while(k < s/2){
+                k++;
+                char readVar[50];
+                for(int h = 0; h < 50; h++){
+                    readVar[h] = '\0';
+                }
+                readVar[0] = ' ';
+                int hn = 0;
+                int nh = 1;
 
-            while(currentLine[hn] != ';'){
-                hn++;
-                if(hn > strlen(currentLine)){break;}
-            }
-
-            if(currentLine[hn] == ';' && hn != strlen(currentLine)){
-                //start reading var here
-                readVar[1] = currentLine[hn];
-                hn++;
                 while(currentLine[hn] != ';'){
-                    nh++;
-                    readVar[nh] = currentLine[hn];
                     hn++;
                     if(hn > strlen(currentLine)){break;}
                 }
-                readVar[nh + 1] = ';';
-                //readVar+1 is the text to be replaced
-                if(currentLine[hn] == ';'){
-                    int z = 0;
-                    int correction = 0;
-                    //finding the variable in array
-                    while(z < varAmount){
-                        char temp[BUFFER_SIZE];
-                        sprintf(temp, "%c%s%c", ';', varNames[z], ';');
 
-                        if(strcmp(temp, readVar+1) == 0){
-                            correction = 1;
-                            break;
+                if(currentLine[hn] == ';' && hn != strlen(currentLine)){
+                    //start reading var here
+                    readVar[1] = currentLine[hn];
+                    hn++;
+                    while(currentLine[hn] != ';'){
+                        nh++;
+                        readVar[nh] = currentLine[hn];
+                        hn++;
+                        if(hn > strlen(currentLine)){break;}
+                    }
+                    readVar[nh + 1] = ';';
+                    //readVar+1 is the text to be replaced
+                    if(currentLine[hn] == ';'){
+                        int z = 0;
+                        int correction = 0;
+                        //finding the variable in array
+                        while(z < varAmount){
+                            char temp[BUFFER_SIZE];
+                            sprintf(temp, "%c%s%c", ';', varNames[z], ';');
+
+                            if(strcmp(temp, readVar+1) == 0){
+                                correction = 1;
+                                break;
+                            }
+                            z++;
+                        }    
+                        if(correction == 1){
+                            char temp[BUFFER_SIZE];
+                            sprintf(temp, "%c%s%c", ';', varNames[z], ';');
+
+                            char *res = replaceWord(currentLine, temp, varValues[z]);
+                            sprintf(currentLine, "%s", res);
+                            free(res);
                         }
-                        z++;
-                    }    
-                    if(correction == 1){
-                        char temp[BUFFER_SIZE];
-                        sprintf(temp, "%c%s%c", ';', varNames[z], ';');
-
-                        char *res = replaceWord(currentLine, temp, varValues[z]);
-                        sprintf(currentLine, "%s", res);
-                        free(res);
                     }
                 }
             }
@@ -113,7 +117,7 @@ void COMPILE(char *compileFile){
                 currentBuffer = currentLine[currentLineChar];
                 //trying to find a function
                 
-                while(strcmp(readFunc+1, "yazdir") != 0 && strcmp(readFunc+1, "dosyayaEkle") != 0 && strcmp(readFunc+1, "dosyayaYaz") != 0 && strcmp(readFunc+1, "cikis") != 0 && strcmp(readFunc+1, "hataIleCikis") != 0 && strcmp(readFunc+1, "dosyaOku") != 0 && strcmp(readFunc+1, "satirOku") != 0 && strcmp(readFunc+1, "yeniSatir") != 0 && strcmp(readFunc+1, "girdiAl") != 0 && strcmp(readFunc+1, "yazi") != 0 && strcmp(readFunc+1, "sayi") != 0){ 
+                while(strcmp(readFunc+1, "yazdir") != 0 && strcmp(readFunc+1, "dosyayaEkle") != 0 && strcmp(readFunc+1, "dosyayaYaz") != 0 && strcmp(readFunc+1, "cikis") != 0 && strcmp(readFunc+1, "hataIleCikis") != 0 && strcmp(readFunc+1, "dosyaOku") != 0 && strcmp(readFunc+1, "satirOku") != 0 && strcmp(readFunc+1, "yeniSatir") != 0 && strcmp(readFunc+1, "girdiAl") != 0 && strcmp(readFunc+1, "deger") != 0 && strcmp(readFunc+1, "ekle") != 0){ 
                     if(currentLineChar > strlen(currentLine)){break;}
                     //if no function is found until the end of the line, give no function error
                     currentLineChar++;
@@ -291,10 +295,33 @@ void COMPILE(char *compileFile){
                 }
 
                 else if(strcmp(readFunc+1, "girdiAl") == 0){
-                    
+                    char *newFs = malloc(BUFFER_SIZE); 
+
+                    currentLineChar++;
+                    currentBuffer = currentLine[currentLineChar];
+                    while(currentBuffer == ' '){
+                        if(currentLineChar > strlen(currentLine)){break;}
+                        currentLineChar++;
+                        currentBuffer = currentLine[currentLineChar];
+                    }
+                            
+                    //run this after the while is executed
+                        
+                    currentBuffer = currentLine[currentLineChar];
+                    append_char(newFs, currentBuffer);
+
+                    while(currentBuffer != ' '){
+                        if(currentLineChar > strlen(currentLine)-1){break;}
+                        currentLineChar++;
+                        currentBuffer = currentLine[currentLineChar];
+                        append_char(newFs, currentBuffer);
+                    }
+                    newFs[strlen(newFs)] = '\0';
+                    GET_INPUT(newFs+3);
+                    free(newFs);
                 }
 
-                else if(strcmp(readFunc+1, "sayi") == 0 || strcmp(readFunc+1, "yazi") == 0){
+                else if(strcmp(readFunc+1, "deger") == 0){
                     while(currentBuffer == ' '){
                         if(currentLineChar > strlen(currentLine)){break;}
                         //if no function is found until the end of the line, give no function error
@@ -339,12 +366,41 @@ void COMPILE(char *compileFile){
                                 
                                 strcpy(varNames[varAmount], readStr+1);
                                 strcpy(varValues[varAmount], readFileName+1);
+                                
+                                
                                 //add new variable to array
                                 
                                 varAmount++;
                             }
                         }
                     }
+                }
+
+                if(strcmp(readFunc+1, "ekle") == 0){ //if the function is log
+                    char *newFs = malloc(BUFFER_SIZE); 
+
+                    currentLineChar++;
+                    currentBuffer = currentLine[currentLineChar];
+                    while(currentBuffer == ' '){
+                        if(currentLineChar > strlen(currentLine)){break;}
+                        currentLineChar++;
+                        currentBuffer = currentLine[currentLineChar];
+                    }
+                            
+                    //run this after the while is executed
+                        
+                    currentBuffer = currentLine[currentLineChar];
+                    append_char(newFs, currentBuffer);
+
+                    while(currentBuffer != ' '){
+                        if(currentBuffer == '\n'){break;}
+                        currentLineChar++;
+                        currentBuffer = currentLine[currentLineChar];
+                        append_char(newFs, currentBuffer);
+                    }
+                    newFs[strlen(newFs) - 1] = '\0';
+                    COMPILE(newFs+1);
+                    free(newFs);
                 }
             }
         }
