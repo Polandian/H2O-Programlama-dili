@@ -9,6 +9,13 @@
 #define BUFFER_SIZE 1024
 #define FILE_NOT_FOUND_ERROR "ERROR: WANTED FILE CAN NOT BE FOUND"
 #define NO_FUNCTION_ERROR "ERROR: CAN'T FIND A FUNCTION IN LINE"
+#define CANT_READ_VAR_ERROR "ERROR: CAN'T FIND THE OTHER ';' TO READ VARIABLE"
+
+unsigned short lineAmount = 0; //lines amount
+int varAmount = 0; //variables that user created amount 
+
+static char varNames[BUFFER_SIZE][BUFFER_SIZE];  //variables that user create
+static char varValues[BUFFER_SIZE][BUFFER_SIZE]; //value of them ↑
 
 void CLOSE_APP(char *message, int error){
     printf("%s", message);
@@ -160,4 +167,39 @@ const char *get_filename_ext(const char *filename) {
     const char *dot = strrchr(filename, '.');
     if(!dot || dot == filename) return "";
     return dot + 1;
+}
+
+void append_char(char *str, char ch) {
+    int len = strlen(str);
+    
+    str[len] = ch;
+    str[len + 1] = '\0'; // Add the null terminator at the new end of the string
+}
+
+void remove_string_at_index(char arr[BUFFER_SIZE][BUFFER_SIZE], int *size, int index) {
+    if (index < 0 || index >= *size) {
+        printf("Index out of bounds.\n");
+        return;
+    }
+
+    // Shift elements to remove the element at the given index
+    for (int i = index; i < (*size - 4); i++) {
+        strcpy(arr[i], arr[i + 1]);
+    }
+
+    (*size)--;  // Decrease the size of the array
+}
+
+void GET_INPUT(char *varName){
+    char *takenInput = malloc(BUFFER_SIZE);
+    scanf(" %1024[^\n]",takenInput);
+    
+    int i = -1;
+    while(i < varAmount - 1){
+        i++;
+        if(strcmp(varNames[i], varName) == -1){
+            strcpy(varValues[i], takenInput);
+            break;
+        }
+    }
 }
