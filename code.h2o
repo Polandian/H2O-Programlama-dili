@@ -1,26 +1,25 @@
+ekle degerler.h2o
+
 yazdir "Bu program h2o adli dilde yazilmistir"
 yazdir "-------------------------------------"
 
-deger ilkSayi "12"
-deger ikinciSayi "24"
 yazdir ";ilkSayi; + ;ikinciSayi;"
 
 yeniSatir
 
-deger dosya "hello"
 dosyayaYaz  ";dosya;" "naber"
 dosyayaEkle ";dosya;" "tanisalim mi"
 
-yeniSatir
-
 dosyaOku ";dosya;"
-satirOku ";dosya;""2"
+satirOku ";dosya;" "2"
 
 yeniSatir
 yeniSatir
 
-deger buSayi "12"
 yazdir ";buSayi;"
-
-deger buYazi "nabers"
 yazdir ";buYazi;"
+
+deger alinanGirdi ""
+girdiAl alinanGirdi
+
+yazdir ";alinanGirdi;;ilkSayi;"
