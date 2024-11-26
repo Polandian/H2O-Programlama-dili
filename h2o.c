@@ -31,11 +31,6 @@ int main(){
     printf("%d", strlen(testChar)); //gets the length of the string (without \0)
     free(testChar); //frees memory */
 
-    //free memory
-    /*for (int i = 0; i < 5; i++) {
-        free(my_strings[i]);
-    }
-    */
     //btw to detect if a variable is a number or not
     //just do atoi on it
     //if its a string it will always give 0
@@ -43,27 +38,27 @@ int main(){
 
 
     //TODO HATAİLEÇIKIŞ
-    //TODO MULTIPLE FILES (HEADERS)
     //TODO MATH (EASIEST IMO)
-    
+    //TODO ERROR MESSAGES
+
     //TODO https://stackoverflow.com/a/55473328/28041550 FOR USER FUNCTIONS
 
-    
     system("cls"); //clears screen
     
-    char *fs = malloc(1024); //file to run
+    char *fs = malloc(BUFFER_SIZE); //file to run
     
     /*char *userDedicate = malloc(1024);
     USER_INPUT(userDedicate);
     free(userDedicate);*/
 
     printf("Calistirilacak dosyayi girin: ");
-    scanf("%s", fs);
+    scanf("%1024[^\n]", fs);
 
+    system("cls");
     COMPILE(fs); //compiles the file here
     free(fs);    //free file name here
 
-    char canExit[1024];
+    char canExit[BUFFER_SIZE];
     printf("\n\n\n\n\nKod calistirildi, artik bu pencereyi kapatabilirsiniz...");
     scanf("%s", canExit);
     return 0;
