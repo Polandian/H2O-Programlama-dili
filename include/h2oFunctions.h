@@ -7,9 +7,11 @@
 #include <stdbool.h>
 
 #define BUFFER_SIZE 1024
-#define FILE_NOT_FOUND_ERROR "ERROR: WANTED FILE CAN NOT BE FOUND"
-#define NO_FUNCTION_ERROR "ERROR: CAN'T FIND A FUNCTION IN LINE"
+#define FILE_NOT_FOUND_ERROR "\033[0;31mHATA: ARANAN DOSYA BULUNAMADI\n\033[0m"
+#define NO_FUNCTION_ERROR "\033[0;31mHATA: SATIRDA FONKSIYON BULUNAMADI\n\033[0m"
 #define CANT_READ_VAR_ERROR "ERROR: CAN'T FIND THE OTHER ';' TO READ VARIABLE"
+
+#define atoa(x) #x
 
 unsigned short lineAmount = 0; //lines amount
 int varAmount = 0; //variables that user created amount 
@@ -18,7 +20,7 @@ static char varNames[BUFFER_SIZE][BUFFER_SIZE];  //variables that user create
 static char varValues[BUFFER_SIZE][BUFFER_SIZE]; //value of them ↑
 
 void CLOSE_APP(char *message, int error){
-    printf("%s", message);
+    printf("\033[0;31m%s\033[0m", message);
     if(error == 0){ //if not error
         exit(0);
     }
@@ -36,8 +38,7 @@ void CONSOLE_LOG(char *log){ //Enters a text to the console
 void READ_ENTIRE_FILE(char *fileName){ //Gets a file and reads the entire text of it
     FILE *fileToBeRead = fopen(fileName, "r"); //Open file
     if(fileToBeRead == NULL){ //If file not found
-        system("cls");
-        CLOSE_APP(FILE_NOT_FOUND_ERROR, 1);
+        printf(FILE_NOT_FOUND_ERROR);
     }
     else{ //If it does exist read the file
         char fileText[BUFFER_SIZE] = "\0";
@@ -58,8 +59,7 @@ void READ_SPECIFIC_LINE(char *fileName, int line){
     int count = 0;
     line--; //make it 1 less so that you can properly read it
     if(fileToBeRead == NULL){
-        system("cls");
-        CLOSE_APP(FILE_NOT_FOUND_ERROR, 1);
+        printf(FILE_NOT_FOUND_ERROR);
     }
     else{
         while(fgets(rdl, BUFFER_SIZE, fileToBeRead) != NULL){
@@ -82,8 +82,7 @@ void WRITE_TO_FILE(char *fileName, char *textToWrite, char *writeType){
     FILE *fileToOverwrite = fopen(fileName, writeType);
 
     if(fileToOverwrite == NULL){
-        system("cls");
-        CLOSE_APP(FILE_NOT_FOUND_ERROR, 1);
+        printf(FILE_NOT_FOUND_ERROR);
     }
     else{
         fprintf(fileToOverwrite, textToWrite); //prints the text
@@ -99,7 +98,6 @@ int NUMBER_CALCULATION(float number1, float number2, char *operator){
         case '+': return number1 + number2;
         case '-': return number1 - number2;
         case '*': return number1 * number2;
-        case 'x': return number1 * number2;
         case '/': return number1 / number2;
         case '%': return fmodf(number1, number2);
         default: ;
@@ -123,11 +121,10 @@ int NUMBER_CALCULATION(float number1, float number2, char *operator){
 const char *USER_INPUT(char *input){
     scanf("%s", &input);
     return input;
+    free(input);
 }
 
-char* replaceWord(const char* s, const char* oldW, 
-                const char* newW) 
-{ 
+char* replaceWord(const char* s, const char* oldW, const char* newW) { 
     char* result; 
     int i, cnt = 0; 
     int newWlen = strlen(newW); 
@@ -159,9 +156,55 @@ char* replaceWord(const char* s, const char* oldW,
             result[i++] = *s++; 
     } 
  
-    result[i] = '\0'; 
+    result[i] = '\0';
     return result; 
-} 
+}
+ 
+char *str_replace(char *orig, char *rep, char *with) {
+    char *result; // the return string
+    char *ins;    // the next insert point
+    char *tmp;    // varies
+    int len_rep;  // length of rep (the string to remove)
+    int len_with; // length of with (the string to replace rep with)
+    int len_front; // distance between rep and end of last rep
+    int count;    // number of replacements
+
+    // sanity checks and initialization
+    if (!orig || !rep)
+        return NULL;
+    len_rep = strlen(rep);
+    if (len_rep == 0)
+        return NULL; // empty rep causes infinite loop during count
+    if (!with)
+        with = "";
+    len_with = strlen(with);
+
+    // count the number of replacements needed
+    ins = orig;
+    for (count = 0; (tmp = strstr(ins, rep)); ++count) {
+        ins = tmp + len_rep;
+    }
+
+    tmp = result = malloc(strlen(orig) + (len_with - len_rep) * count + 1);
+
+    if (!result)
+        return NULL;
+
+    // first time through the loop, all the variable are set correctly
+    // from here on,
+    //    tmp points to the end of the result string
+    //    ins points to the next occurrence of rep in orig
+    //    orig points to the remainder of orig after "end of rep"
+    while (count--) {
+        ins = strstr(orig, rep);
+        len_front = ins - orig;
+        tmp = strncpy(tmp, orig, len_front) + len_front;
+        tmp = strcpy(tmp, with) + len_with;
+        orig += len_front + len_rep; // move to next "end of rep"
+    }
+    strcpy(tmp, orig);
+    return result;
+}
 
 const char *get_filename_ext(const char *filename) {
     const char *dot = strrchr(filename, '.');
@@ -176,30 +219,64 @@ void append_char(char *str, char ch) {
     str[len + 1] = '\0'; // Add the null terminator at the new end of the string
 }
 
-void remove_string_at_index(char arr[BUFFER_SIZE][BUFFER_SIZE], int *size, int index) {
-    if (index < 0 || index >= *size) {
-        printf("Index out of bounds.\n");
-        return;
+int comparevar(char *first, char *second){ //strcmp didn't work, so i instead made my own
+    int i = 0;
+    for(i = 0; i < strlen(first); i++){
+        if(first[i] != second[i]){
+            return -1;
+        }
+    }
+    return 0;
+}
+
+void intToStr(int N, char *str) {
+    int i = 0;
+  
+    int sign = N;
+
+    if (N < 0)
+        N = -N;
+
+    while (N > 0) {
+        str[i++] = N % 10 + '0';
+      	N /= 10;
+    } 
+
+    if (sign < 0) {
+        str[i++] = '-';
     }
 
-    // Shift elements to remove the element at the given index
-    for (int i = index; i < (*size - 4); i++) {
-        strcpy(arr[i], arr[i + 1]);
-    }
+    str[i] = '\0';
 
-    (*size)--;  // Decrease the size of the array
+    for (int j = 0, k = i - 1; j < k; j++, k--) {
+        char temp = str[j];
+        str[j] = str[k];
+        str[k] = temp;
+    }
+}
+
+void remove_char(char* str, char c) {
+    char *pr = str, *pw = str;
+    while (*pr) {
+        *pw = *pr++;
+        pw += (*pw != c);
+    }
+    *pw = '\0';
 }
 
 void GET_INPUT(char *varName){
     char *takenInput = malloc(BUFFER_SIZE);
-    scanf(" %1024[^\n]",takenInput);
-    
+    scanf(" %1024[^\n]", takenInput);
+
     int i = -1;
     while(i < varAmount - 1){
         i++;
-        if(strcmp(varNames[i], varName) == -1){
+        char *loc = varNames[i];
+        
+        if(comparevar(loc, varName) == 0){
             strcpy(varValues[i], takenInput);
             break;
         }
     }
+    free(takenInput);
 }
