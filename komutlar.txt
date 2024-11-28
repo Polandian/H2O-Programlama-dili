@@ -1,0 +1,18 @@
+yazdır: konsola yazı yazdırır
+
+dosyayaEkle: append text to file
+dosyayaYaz: overwrite text to file
+dosyaOku: reads entire file
+satirOku: reads a specific line from file
+
+ekle: header file
+
+yeniSatir: \n
+
+deger: assign variable
+girdiAl: so do this with 1 parameter, so like you have to declare a variable beforehand then use girdiAl with that variable
+
+matematik işlemleri: bir sayıdan sonra işlemin sembolü, sonrasında da ikinci sayı.
+
+çıkış: exit with no error
+hataİleÇıkış: exit with error
