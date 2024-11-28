@@ -1,18 +1,27 @@
 yazdır: konsola yazı yazdırır
 
-dosyayaEkle: append text to file
-dosyayaYaz: overwrite text to file
-dosyaOku: reads entire file
-satirOku: reads a specific line from file
+dosyayaEkle: dosyaya yazı ekler
+dosyayaYaz: dosyanın içindeki tüm yazıyı siler ve yeni yazıyı ekler
+dosyaOku: bütün bir dosyayı ekrana yazdırır
+satirOku: bir dosyadan belli bir satırı yazdırır
 
-ekle: header file
+ekle: başka bir h2o dosyasını şimdiki dosyaya ekler
 
-yeniSatir: \n
+yeniSatir: ekrana boş bir satır yazdırır
 
-deger: assign variable
-girdiAl: so do this with 1 parameter, so like you have to declare a variable beforehand then use girdiAl with that variable
+deger: ilk önce değerin adı yazılır, sonrasında da değere verilmek istenen değer yazılır.
+Örnek:
+
+deger sayi "1+2" --- sayi == 3
+
+sonrasında da iki noktalı virgülün arasına değerin adı koyularak çağırılır.
+Örnek:
+
+yazdir ";sayi;" --- 3
+
+girdiAl: alınacak girdiyi bir değere atar.
 
 matematik işlemleri: bir sayıdan sonra işlemin sembolü, sonrasında da ikinci sayı.
 
-çıkış: exit with no error
-hataİleÇıkış: exit with error
+çıkış: programdan dilediğiniz zaman çıkmanızı sağlar.
+hataİleÇıkış: exit with error ---ŞU AN ÇALIŞMIYOR
