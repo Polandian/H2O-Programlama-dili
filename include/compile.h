@@ -106,7 +106,110 @@ void COMPILE(char *compileFile){
                     }
                 }
             }
+            currentLineChar = 0;
+            currentBuffer = currentLine[currentLineChar];
 
+            int bb = 0;
+            int ss = 0;
+            int kk = 0;
+            for(; bb < strlen(currentLine); bb++){ //gets all math operators
+                if(currentLine[bb] == '+' || 
+                currentLine[bb] == '-' || 
+                currentLine[bb] == '*' || 
+                currentLine[bb] == '/' || 
+                currentLine[bb] == '%'){
+                    ss++;
+                }
+            }
+            while(kk < ss){
+                kk++;
+                
+                int fn = 0; //first number
+                int sn = 0; //second number
+
+                char *fnc = malloc(1024); //first number as text
+                char *snc = malloc(1024); //second number as text
+                char *ttr = malloc(1024); //text to replace
+                char operator;            //operator as char
+
+                while(currentBuffer != '+' && currentBuffer != '-' && currentBuffer != '*' && currentBuffer != '/' && currentBuffer != '%'){
+                    currentLineChar++;
+                    currentBuffer = currentLine[currentLineChar];    
+                }
+
+                //gets the math operator
+                if(currentBuffer == '+' || currentBuffer == '-' || currentBuffer == '*' || currentBuffer == '/' || currentBuffer == '%'){
+                    currentLineChar--;
+                    currentBuffer = currentLine[currentLineChar];    
+                    while(currentBuffer == ' '){ //goes back until there is no space
+                        if(currentLineChar < 1){break;}
+                        currentLineChar--;
+                        currentBuffer = currentLine[currentLineChar];
+                    }
+
+                    if(currentBuffer != ' '){ //goes back until there is space
+                        while(currentBuffer != ' '){
+                            if(currentLineChar < 1){break;}
+                            currentLineChar--;
+                            currentBuffer = currentLine[currentLineChar];    
+                        }
+                    }
+                    //start reading first number
+                    if(currentBuffer == ' ' || currentLineChar == 0){
+                        if(currentBuffer == ' '){
+                            currentLineChar+=2;
+                            currentBuffer = currentLine[currentLineChar];
+                        }
+                        while(currentBuffer != ' ' && currentBuffer != '+' && currentBuffer != '-' && currentBuffer != '*' && currentBuffer != '/' && currentBuffer != '%'){
+                            if(currentLineChar > strlen(currentLine) - 1){break;}
+                            append_char(fnc, currentBuffer);
+                            append_char(ttr, currentBuffer);
+                            currentLineChar++;
+                            currentBuffer = currentLine[currentLineChar]; 
+                        }
+                        append_char(ttr, currentBuffer);
+                    }
+                    while(currentBuffer == ' '){
+                        if(currentLineChar > strlen(currentLine) - 1){break;}
+                        currentLineChar++;
+                        currentBuffer = currentLine[currentLineChar];
+                        append_char(ttr, currentBuffer);
+                    }
+
+                    operator = currentBuffer; //set operator
+
+                    currentLineChar++;
+                    currentBuffer = currentLine[currentLineChar];
+
+                    while(currentBuffer == ' '){
+                        append_char(ttr, currentBuffer);
+                        currentLineChar++;
+                        currentBuffer = currentLine[currentLineChar];
+                    }
+
+                    while(currentBuffer != ' ' && currentBuffer != '"'){
+                        if(currentLineChar > strlen(currentLine) - 1){break;}
+                        append_char(snc, currentBuffer);
+                        append_char(ttr, currentBuffer);
+                        currentLineChar++;
+                        currentBuffer = currentLine[currentLineChar]; 
+                    }
+                }
+                char result[BUFFER_SIZE];
+                intToStr(NUMBER_CALCULATION(atoi(fnc+1), atoi(snc+1), &operator), result);
+                
+                char *res = str_replace(currentLine, ttr+1, result);
+
+                sprintf(currentLine, "%s", res);
+
+                free(res);
+                free(fnc);
+                free(snc);
+                free(ttr);
+            }
+            currentLineChar = 0;
+            currentBuffer = currentLine[currentLineChar];
+        
             while(currentBuffer == ' '){ //for tabs in the beginning of the line
                 currentLineChar++;
                 currentBuffer = currentLine[currentLineChar];
@@ -126,7 +229,7 @@ void COMPILE(char *compileFile){
                     currentBuffer = currentLine[currentLineChar];
                 }
                 
-                if(strcmp(readFunc+1, "yazdir") == 0){ //if the function is log
+                if(strcmp(readFunc+1, "yazdir") == 0){
                     currentLineChar++;
                     currentBuffer = currentLine[currentLineChar];
                     while(currentBuffer != '"' && currentLineChar < sizeof(currentLine)){
@@ -213,7 +316,32 @@ void COMPILE(char *compileFile){
                 }
 
                 else if(strcmp(readFunc+1, "hataIleCikis") == 0){
-                    //todo this
+                        currentLineChar++;
+                        currentBuffer = currentLine[currentLineChar];
+                        while(currentBuffer != '"' && currentLineChar < sizeof(currentLine)){
+                            currentLineChar++;
+                            currentBuffer = currentLine[currentLineChar];
+                        }
+                                
+                        //run this after the while is executed
+                        currentLineChar++;
+                        currentFuncChar = 1;
+                            
+                        currentBuffer = currentLine[currentLineChar];
+                        
+                        readStr[1] = currentBuffer;
+                        readStr[0] = ' ';
+
+                        while(currentBuffer != '"' && currentLineChar < sizeof(currentLine)){
+                            currentLineChar++;
+                            currentBuffer = currentLine[currentLineChar];
+                                
+                            currentFuncChar++;
+                            readStr[currentFuncChar] = currentBuffer;
+                        }
+                        readStr[currentFuncChar] = '\0';
+                        system("cls");
+                        CLOSE_APP(readStr+1 , 1);
                 }
 
                 else if(strcmp(readFunc+1, "dosyaOku") == 0){
@@ -296,7 +424,8 @@ void COMPILE(char *compileFile){
 
                 else if(strcmp(readFunc+1, "girdiAl") == 0){
                     char *newFs = malloc(BUFFER_SIZE); 
-
+                    newFs[0] = ' ';
+                    newFs[1] = '\0';
                     currentLineChar++;
                     currentBuffer = currentLine[currentLineChar];
                     while(currentBuffer == ' '){
@@ -316,8 +445,8 @@ void COMPILE(char *compileFile){
                         currentBuffer = currentLine[currentLineChar];
                         append_char(newFs, currentBuffer);
                     }
-                    newFs[strlen(newFs)] = '\0';
-                    GET_INPUT(newFs+3);
+
+                    GET_INPUT(newFs+1);
                     free(newFs);
                 }
 
@@ -376,7 +505,7 @@ void COMPILE(char *compileFile){
                     }
                 }
 
-                if(strcmp(readFunc+1, "ekle") == 0){ //if the function is log
+                if(strcmp(readFunc+1, "ekle") == 0){
                     char *newFs = malloc(BUFFER_SIZE); 
 
                     currentLineChar++;
