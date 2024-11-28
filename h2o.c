@@ -5,13 +5,8 @@
 
 //Functions we are going to cover this time:
 /*
--print
--all file actions (w, r)
 -creating own functions (somehow idk how but somehow)
--data types (int, char (also string), bool)
--closing the app when finished (in the programming language ofc) via exit(int)
 -calculations somehow with a while loop to looks for the new char that is a operator
--also maybe inputs but probably not today
 */
 
 //By the way im a pretty beginner in C
@@ -31,15 +26,10 @@ int main(){
     printf("%d", strlen(testChar)); //gets the length of the string (without \0)
     free(testChar); //frees memory */
 
-    //btw to detect if a variable is a number or not
-    //just do atoi on it
-    //if its a string it will always give 0
-    //and also check if its own value equals to '0'
-
 
     //TODO HATAİLEÇIKIŞ
-    //TODO MATH (EASIEST IMO)
     //TODO ERROR MESSAGES
+    //TODO BE ABLE TO USE FUNCTIONS BY CALLING THEIR NAME WITH () PARANTHESES
 
     //TODO https://stackoverflow.com/a/55473328/28041550 FOR USER FUNCTIONS
 
@@ -59,7 +49,7 @@ int main(){
     free(fs);    //free file name here
 
     char canExit[BUFFER_SIZE];
-    printf("\n\n\n\n\nKod calistirildi, artik bu pencereyi kapatabilirsiniz...");
+    printf("\n\n\n\n\n\e[44mKod calistirildi, artik bu pencereyi kapatabilirsiniz...\033[0m\e[0m");
     scanf("%s", canExit);
     return 0;
 }
