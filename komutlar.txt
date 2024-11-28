@@ -24,4 +24,4 @@ girdiAl: alınacak girdiyi bir değere atar.
 matematik işlemleri: bir sayıdan sonra işlemin sembolü, sonrasında da ikinci sayı.
 
 çıkış: programdan dilediğiniz zaman çıkmanızı sağlar.
-hataİleÇıkış: exit with error ---ŞU AN ÇALIŞMIYOR
+hataİleÇıkış: programdan istediğiniz bir hata yazısı ile çıkar.
