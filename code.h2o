@@ -1,9 +1,12 @@
-ekle degerler.h2o
+deger satirCizgisi "__________________________________"
+deger dosya "hello"
+deger kullaniciIsmi ""
+deger ilkSayi ""
+deger ikinciSayi ""
+deger islem ""
 
-yazdir "Bu program h2o adli dilde yazilmistir"
-yazdir "-------------------------------------"
-
-yazdir ";ilkSayi; + ;ikinciSayi;"
+yazdir "Bu program H2O dilinde yazilmistir"
+yazdir ";satirCizgisi;"
 
 yeniSatir
 
@@ -11,15 +14,22 @@ dosyayaYaz  ";dosya;" "naber"
 dosyayaEkle ";dosya;" "tanisalim mi"
 
 dosyaOku ";dosya;"
-satirOku ";dosya;" "2"
+satirOku ";dosya;""1"
 
 yeniSatir
+
+yazdir "Gelin biraz matematik yapalim."
+yazdir ";satirCizgisi;"
+
 yeniSatir
 
-yazdir ";buSayi;"
-yazdir ";buYazi;"
+yazdir "Islemin ilk sayisini girin:"
+girdiAl ilkSayi
 
-deger alinanGirdi ""
-girdiAl alinanGirdi
+yazdir "Ikinci sayiyi giriniz:"
+girdiAl ikinciSayi
 
-yazdir ";alinanGirdi;;ilkSayi;"
+yazdir "Islemi giriniz:"
+girdiAl islem
+
+yazdir ";ilkSayi; ;islem; ;ikinciSayi;"
