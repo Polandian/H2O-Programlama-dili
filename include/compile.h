@@ -111,7 +111,7 @@ void COMPILE(char *compileFile){
 
             int bb = 0;
             int ss = 0;
-            int kk = 0;
+            int kk = 0; /*mathematic*/
             for(; bb < strlen(currentLine); bb++){ //gets all math operators
                 if(currentLine[bb] == '+' || 
                 currentLine[bb] == '-' || 
@@ -127,10 +127,19 @@ void COMPILE(char *compileFile){
                 int fn = 0; //first number
                 int sn = 0; //second number
 
-                char *fnc = malloc(1024); //first number as text
-                char *snc = malloc(1024); //second number as text
-                char *ttr = malloc(1024); //text to replace
+                char *fnc = malloc(512); //first number as text
+                char *snc = malloc(512); //second number as text
+                char *ttr = malloc(512); //text to replace
                 char operator;            //operator as char
+
+                fnc[0] = ' ';
+                snc[0] = ' ';
+                ttr[0] = ' ';
+
+                if(strlen(fnc) > 1){
+                    fnc[1] = '\0';
+                    fnc[2] = '\0';
+                }
 
                 while(currentBuffer != '+' && currentBuffer != '-' && currentBuffer != '*' && currentBuffer != '/' && currentBuffer != '%'){
                     currentLineChar++;
@@ -160,7 +169,7 @@ void COMPILE(char *compileFile){
                             currentLineChar+=2;
                             currentBuffer = currentLine[currentLineChar];
                         }
-                        while(currentBuffer != ' ' && currentBuffer != '+' && currentBuffer != '-' && currentBuffer != '*' && currentBuffer != '/' && currentBuffer != '%'){
+                        while(currentBuffer != ' ' && currentBuffer != '+' && currentBuffer != '-' && currentBuffer != '*' && currentBuffer != '/' && currentBuffer != '%' && currentBuffer != '"'){
                             if(currentLineChar > strlen(currentLine) - 1){break;}
                             append_char(fnc, currentBuffer);
                             append_char(ttr, currentBuffer);
@@ -197,11 +206,9 @@ void COMPILE(char *compileFile){
                 }
                 char result[BUFFER_SIZE];
                 intToStr(NUMBER_CALCULATION(atoi(fnc+1), atoi(snc+1), &operator), result);
-                
                 char *res = str_replace(currentLine, ttr+1, result);
 
                 sprintf(currentLine, "%s", res);
-
                 free(res);
                 free(fnc);
                 free(snc);
@@ -220,7 +227,7 @@ void COMPILE(char *compileFile){
                 currentBuffer = currentLine[currentLineChar];
                 //trying to find a function
                 
-                while(strcmp(readFunc+1, "yazdir") != 0 && strcmp(readFunc+1, "dosyayaEkle") != 0 && strcmp(readFunc+1, "dosyayaYaz") != 0 && strcmp(readFunc+1, "cikis") != 0 && strcmp(readFunc+1, "hataIleCikis") != 0 && strcmp(readFunc+1, "dosyaOku") != 0 && strcmp(readFunc+1, "satirOku") != 0 && strcmp(readFunc+1, "yeniSatir") != 0 && strcmp(readFunc+1, "girdiAl") != 0 && strcmp(readFunc+1, "deger") != 0 && strcmp(readFunc+1, "ekle") != 0){ 
+                while(strcmp(readFunc+1, "yazdir") != 0 && strcmp(readFunc+1, "dosyayaEkle") != 0 && strcmp(readFunc+1, "dosyayaYaz") != 0 && strcmp(readFunc+1, "cikis") != 0 && strcmp(readFunc+1, "hataIleCikis") && strcmp(readFunc+1, ":q") != 0 && strcmp(readFunc+1, "dosyaOku") != 0 && strcmp(readFunc+1, "satirOku") != 0 && strcmp(readFunc+1, "yeniSatir") != 0 && strcmp(readFunc+1, "girdiAl") != 0 && strcmp(readFunc+1, "deger") != 0 && strcmp(readFunc+1, "ekle") != 0){ 
                     if(currentLineChar > strlen(currentLine)){break;}
                     //if no function is found until the end of the line, give no function error
                     currentLineChar++;
@@ -311,37 +318,37 @@ void COMPILE(char *compileFile){
                     }
                 }
 
-                else if(strcmp(readFunc+1, "cikis") == 0){
+                else if(strcmp(readFunc+1, "cikis") == 0 || strcmp(readFunc+1, ":q") == 0){
                     CLOSE_APP("\n\nUygulamadan cikiliyor...", 0);
                 }
 
                 else if(strcmp(readFunc+1, "hataIleCikis") == 0){
+                    currentLineChar++;
+                    currentBuffer = currentLine[currentLineChar];
+                    while(currentBuffer != '"' && currentLineChar < sizeof(currentLine)){
                         currentLineChar++;
                         currentBuffer = currentLine[currentLineChar];
-                        while(currentBuffer != '"' && currentLineChar < sizeof(currentLine)){
-                            currentLineChar++;
-                            currentBuffer = currentLine[currentLineChar];
-                        }
+                    }
                                 
-                        //run this after the while is executed
-                        currentLineChar++;
-                        currentFuncChar = 1;
-                            
-                        currentBuffer = currentLine[currentLineChar];
+                    //run this after the while is executed
+                    currentLineChar++;
+                    currentFuncChar = 1;
                         
-                        readStr[1] = currentBuffer;
-                        readStr[0] = ' ';
+                    currentBuffer = currentLine[currentLineChar];
+                    
+                    readStr[1] = currentBuffer;
+                    readStr[0] = ' ';
 
-                        while(currentBuffer != '"' && currentLineChar < sizeof(currentLine)){
-                            currentLineChar++;
-                            currentBuffer = currentLine[currentLineChar];
-                                
-                            currentFuncChar++;
-                            readStr[currentFuncChar] = currentBuffer;
-                        }
-                        readStr[currentFuncChar] = '\0';
-                        system("cls");
-                        CLOSE_APP(readStr+1 , 1);
+                    while(currentBuffer != '"' && currentLineChar < sizeof(currentLine)){
+                        currentLineChar++;
+                        currentBuffer = currentLine[currentLineChar];
+                            
+                        currentFuncChar++;
+                        readStr[currentFuncChar] = currentBuffer;
+                    }
+                    readStr[currentFuncChar] = '\0';
+                    system("cls");
+                    CLOSE_APP(readStr+1 , 1);
                 }
 
                 else if(strcmp(readFunc+1, "dosyaOku") == 0){
@@ -508,6 +515,11 @@ void COMPILE(char *compileFile){
                 if(strcmp(readFunc+1, "ekle") == 0){
                     char *newFs = malloc(BUFFER_SIZE); 
 
+                    if(strlen(newFs) > 1){
+                        newFs[1] = '\0';
+                        newFs[2] = '\0';
+                    }
+
                     currentLineChar++;
                     currentBuffer = currentLine[currentLineChar];
                     while(currentBuffer == ' '){
@@ -533,7 +545,7 @@ void COMPILE(char *compileFile){
                 }
             }
         }
-    }   
+    }
     free(file);
     free(compileFile);
 }
