@@ -16,9 +16,6 @@
 unsigned short lineAmount = 0; //lines amount
 int varAmount = 0; //variables that user created amount 
 
-static char varNames[BUFFER_SIZE][BUFFER_SIZE];  //variables that user create
-static char varValues[BUFFER_SIZE][BUFFER_SIZE]; //value of them ↑
-
 void CLOSE_APP(char *message, int error){
     printf("\033[0;31m%s\033[0m", message);
     if(error == 0){ //if not error
@@ -264,10 +261,10 @@ void remove_char(char* str, char c) {
     *pw = '\0';
 }
 
-void GET_INPUT(char *varName){
+void GET_INPUT(char *varName){  
     char *takenInput = malloc(BUFFER_SIZE);
-    scanf(" %1024[^\n]", takenInput);
-
+    scanf("%s", takenInput);    
+    
     int i = -1;
     while(i < varAmount - 1){
         i++;
