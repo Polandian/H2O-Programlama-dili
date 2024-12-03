@@ -6,7 +6,6 @@
 //Functions we are going to cover this time:
 /*
 -creating own functions (somehow idk how but somehow)
--calculations somehow with a while loop to looks for the new char that is a operator
 */
 
 //By the way im a pretty beginner in C
@@ -16,6 +15,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+static char varNames[1024][1024];  //variables that user create
+static char varValues[1024][1024]; //value of  them ↑
+
 #include "include/h2oFunctions.h"
 #include "include/compile.h"
 
@@ -27,11 +30,9 @@ int main(){
     free(testChar); //frees memory */
 
 
-    //TODO HATAİLEÇIKIŞ
     //TODO ERROR MESSAGES
-    //TODO BE ABLE TO USE FUNCTIONS BY CALLING THEIR NAME WITH () PARANTHESES
-
-    //TODO https://stackoverflow.com/a/55473328/28041550 FOR USER FUNCTIONS
+    //TODO DO EXTRA MATH SHI
+    //TODO FOR USER FUNCTIONS, JUST KEEP READING AND ADD ALL THE LINES UNTIL bitir TO A STRING, AND WHEN CALLED JUST RUN IT FROM THE STRING ARRAY
 
     system("cls"); //clears screen
     
