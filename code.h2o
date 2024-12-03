@@ -1,9 +1,6 @@
-deger satirCizgisi "__________________________________"
-deger dosya "hello"
-deger kullaniciIsmi ""
-deger ilkSayi ""
-deger ikinciSayi ""
-deger islem ""
+ekle degerler.h2o
+
+yazdir "1+1"
 
 yazdir "Bu program H2O dilinde yazilmistir"
 yazdir ";satirCizgisi;"
@@ -32,4 +29,4 @@ girdiAl ikinciSayi
 yazdir "Islemi giriniz:"
 girdiAl islem
 
-yazdir ";ilkSayi; ;islem; ;ikinciSayi;"
+yazdir ";ilkSayi; + ;ikinciSayi;"
