@@ -90,24 +90,42 @@ void WRITE_TO_FILE(char *fileName, char *textToWrite, char *writeType){
     free(textToWrite);
 }
 
+long power(int x, unsigned n) 
+{ 
+    // Initialize result to 1 
+    long long pow = 1; 
+  
+    // Multiply x for n times 
+    for (int i = 0; i < n; i++) { 
+        pow = pow * x; 
+    } 
+  
+    return pow; 
+} 
+
 int NUMBER_CALCULATION(float number1, float number2, char *operator){
-    switch(*operator){
-        case '+': return number1 + number2;
-        case '-': return number1 - number2;
-        case '*': return number1 * number2;
-        case '/': return number1 / number2;
-        case '%': return fmodf(number1, number2);
-        default: ;
+    if(strlen(operator) == 1){
+        switch(*operator){
+            case '+': return number1 + number2;
+            case '-': return number1 - number2;
+            case '*': return number1 * number2;
+            case '/': return number1 / number2;
+            case '%': return fmodf(number1, number2);
+            default: ;
+        }
     }
+
     //if didn't get any return value from the switch case
-    if(operator == "**"){
-        return pow(number1, number2);
+    if(strcmp(operator, "**") == 0){
+        return power(number1, number2);
     }
-    else if(operator == "++"){
-        return number1++;
+    else if(strcmp(operator, "++") == 0){
+        number1++;
+        return number1;
     }
-    else if(operator == "--"){
-        return number1--;
+    else if(strcmp(operator, "--") == 0){
+        number1--;
+        return number1;
     }
     else if(operator == "squareRoot" || operator == "√"){
         return sqrt(number1);
