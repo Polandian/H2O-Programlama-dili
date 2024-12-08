@@ -1,6 +1,10 @@
 ekle degerler.h2o
 
-yazdir "1+1"
+yazdir "12 %+ 22"
+yazdir "25**2"
+yazdir "1++"
+
+yeniSatir
 
 yazdir "Bu program H2O dilinde yazilmistir"
 yazdir ";satirCizgisi;"
@@ -29,4 +33,4 @@ girdiAl ikinciSayi
 yazdir "Islemi giriniz:"
 girdiAl islem
 
-yazdir ";ilkSayi; + ;ikinciSayi;"
+yazdir ";ilkSayi; ;islem; ;ikinciSayi;"
