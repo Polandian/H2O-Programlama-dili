@@ -116,9 +116,11 @@ void COMPILE(char *compileFile){
                 if(currentLine[bb] == '+' || 
                 currentLine[bb] == '-' || 
                 currentLine[bb] == '*' || 
-                currentLine[bb] == '/' || 
-                currentLine[bb] == '%'){
-                    ss++;
+                currentLine[bb] == '/'){
+                    if(currentLine[bb - 1] != '%') ss++;
+                    else{
+                        memmove(&currentLine[bb - 1], &currentLine[bb], strlen(currentLine) - bb - 1);
+                    }
                 }
             }
             while(kk < ss){
@@ -126,20 +128,34 @@ void COMPILE(char *compileFile){
                 
                 int fn = 0; //first number
                 int sn = 0; //second number
+                int ys = 0;
 
                 char *fnc = malloc(512); //first number as text
                 char *snc = malloc(512); //second number as text
                 char *ttr = malloc(512); //text to replace
-                char operator;            //operator as char
+                char *operator = malloc(8); //operator
+
 
                 fnc[0] = ' ';
                 snc[0] = ' ';
                 ttr[0] = ' ';
+                operator[0] = ' ';
 
                 if(strlen(fnc) > 1){
                     fnc[1] = '\0';
                     fnc[2] = '\0';
                 }
+                if(strlen(ttr) > 1){
+                    ttr[1] = '\0';
+                    ttr[2] = '\0';
+                }
+                if(strlen(operator) > 1){
+                    operator[1] = '\0';
+                    operator[2] = '\0';
+                }
+
+                snc[1] = '0';
+                snc[2] = '\0';
 
                 while(currentBuffer != '+' && currentBuffer != '-' && currentBuffer != '*' && currentBuffer != '/' && currentBuffer != '%'){
                     currentLineChar++;
@@ -185,7 +201,22 @@ void COMPILE(char *compileFile){
                         append_char(ttr, currentBuffer);
                     }
 
-                    operator = currentBuffer; //set operator
+                    if(currentLine[currentLineChar + 1] != '+' && currentLine[currentLineChar + 1] != '-' && currentLine[currentLineChar + 1] != '*'){
+                        operator[1] = currentBuffer; //set operator
+                        operator[2] = '\0';
+                    }
+                    else{
+                        operator[1] = currentBuffer;
+                        operator[2] = currentLine[currentLineChar + 1];
+                        operator[3] = '\0';
+                        
+                        ss--;
+                        
+                        append_char(ttr, currentLine[currentLineChar+1]);
+
+                        currentLineChar++;
+                        currentBuffer = currentLine[currentLineChar];
+                    }
 
                     currentLineChar++;
                     currentBuffer = currentLine[currentLineChar];
@@ -196,23 +227,32 @@ void COMPILE(char *compileFile){
                         currentBuffer = currentLine[currentLineChar];
                     }
 
+                    if(strcmp(operator+1, "++") != 0 && strcmp(operator+1, "--") != 0){
+                        ys = 0;
+                    }else{
+                        ys = 1;
+                    }
+
                     while(currentBuffer != ' ' && currentBuffer != '"'){
                         if(currentLineChar > strlen(currentLine) - 1){break;}
-                        append_char(snc, currentBuffer);
+                        if(ys == 0){append_char(snc, currentBuffer);}
                         append_char(ttr, currentBuffer);
                         currentLineChar++;
                         currentBuffer = currentLine[currentLineChar]; 
                     }
                 }
                 char result[BUFFER_SIZE];
-                intToStr(NUMBER_CALCULATION(atoi(fnc+1), atoi(snc+1), &operator), result);
-                char *res = str_replace(currentLine, ttr+1, result);
+                intToStr(NUMBER_CALCULATION(atoi(fnc+1), atoi(snc+1), operator+1), result);
 
+                char *res = str_replace(currentLine, ttr+1, result);
+                
                 sprintf(currentLine, "%s", res);
+                
                 free(res);
                 free(fnc);
                 free(snc);
                 free(ttr);
+                free(operator);
             }
             currentLineChar = 0;
             currentBuffer = currentLine[currentLineChar];
