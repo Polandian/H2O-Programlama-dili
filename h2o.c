@@ -29,19 +29,22 @@ int main(){
     printf("%d", strlen(testChar)); //gets the length of the string (without \0)
     free(testChar); //frees memory */
 
-
     //TODO ERROR MESSAGES
-    //TODO DO EXTRA MATH SHI
+    
     //TODO FOR USER FUNCTIONS, JUST KEEP READING AND ADD ALL THE LINES UNTIL bitir TO A STRING, AND WHEN CALLED JUST RUN IT FROM THE STRING ARRAY
+    //EXAMPLE:
+    /*
+    fonksiyon yazma(yazi)
+        yazdir ";yazi;"
+    bitir
+
+    THIS ↑ IS A FUNCTION
+    */
 
     system("cls"); //clears screen
-    
+
     char *fs = malloc(BUFFER_SIZE); //file to run
     
-    /*char *userDedicate = malloc(1024);
-    USER_INPUT(userDedicate);
-    free(userDedicate);*/
-
     printf("Calistirilacak dosyayi girin: ");
     scanf("%1024[^\n]", fs);
 
