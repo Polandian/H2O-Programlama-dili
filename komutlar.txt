@@ -1,11 +1,11 @@
 yazdır: konsola yazı yazdırır
 
+ekle: başka bir h2o dosyasını şimdiki dosyaya ekler
+
 dosyayaEkle: dosyaya yazı ekler
 dosyayaYaz: dosyanın içindeki tüm yazıyı siler ve yeni yazıyı ekler
 dosyaOku: bütün bir dosyayı ekrana yazdırır
 satirOku: bir dosyadan belli bir satırı yazdırır
-
-ekle: başka bir h2o dosyasını şimdiki dosyaya ekler
 
 yeniSatir: ekrana boş bir satır yazdırır
 
@@ -22,6 +22,17 @@ yazdir ";sayi;" --- 3
 girdiAl: alınacak girdiyi bir değere atar.
 
 matematik işlemleri: bir sayıdan sonra işlemin sembolü, sonrasında da ikinci sayı.
+Örnek:
+
+yazdir "25**2" -> 625 (karesi)
+yazdir "1++" -> 2     (increment)
+yazdir "2/2" -> 1     (bölme)
+
+Eğer işlem yapmadan sembol yazmak istiyorsanız, sembolden önce "%" işareti koyabilirsiniz.
+Örnek:
+
+yazdir "25 %+ 2" -> "25 + 2"
+yazdir "1%+%+" ->   "1++"
 
 çıkış: programdan dilediğiniz zaman çıkmanızı sağlar.
-hataİleÇıkış: programdan istediğiniz bir hata yazısı ile çıkar.
+hataİleÇıkış: bir hata yazısı ile programdan çıkmanızı sağlar.
