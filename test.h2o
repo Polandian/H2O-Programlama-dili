@@ -1,0 +1,11 @@
+fonksiyon test(yazi1, yazi2, yazi3, yazi4){
+    yazdir ";yazi1;"
+    yazdir ";yazi2;"
+    yazdir ";yazi3;"
+    yazdir ";yazi4;"
+}
+
+deger test1 "1++" 
+deger test2 "2++"
+
+kullan test("sa as asd", "as", test1, test2)
