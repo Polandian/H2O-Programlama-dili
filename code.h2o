@@ -1,5 +1,9 @@
-ekle degerler.h2o
+ekle var.h2o
 
+deger test "test"
+yeniDeger test "1++"
+
+yazdir "%;test%;"
 yazdir "12 %+ 22"
 yazdir "25**2"
 yazdir "1++"
