@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <stdbool.h>
+#include <stdbool.h> //varAmount
 
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 256
 #define FILE_NOT_FOUND_ERROR "\033[0;31mHATA: ARANAN DOSYA BULUNAMADI\n\033[0m"
 #define NO_FUNCTION_ERROR "\033[0;31mHATA: SATIRDA FONKSIYON BULUNAMADI\n\033[0m"
 #define CANT_READ_VAR_ERROR "ERROR: CAN'T FIND THE OTHER ';' TO READ VARIABLE"
@@ -15,6 +15,7 @@
 
 unsigned short lineAmount = 0; //lines amount
 int varAmount = 0; //variables that user created amount 
+int funcAmount = 0;
 
 void CLOSE_APP(char *message, int error){
     printf("\033[0;31m%s\033[0m", message);
@@ -43,7 +44,7 @@ void READ_ENTIRE_FILE(char *fileName){ //Gets a file and reads the entire text o
         while(fgets(currentLine, BUFFER_SIZE, fileToBeRead)) {
             strcat(fileText, currentLine);
         }
-        printf("\n%s: '%s'\n", fileName, fileText);
+        printf("%s", fileText);
     }
     fclose(fileToBeRead); //Free memory
     free(fileName);
@@ -236,7 +237,7 @@ void append_char(char *str, char ch) {
 
 int comparevar(char *first, char *second){ //strcmp didn't work, so i instead made my own
     int i = 0;
-    for(i = 0; i < strlen(first); i++){
+    for(; i < strlen(first); i++){
         if(first[i] != second[i]){
             return -1;
         }
@@ -294,4 +295,20 @@ void GET_INPUT(char *varName){
         }
     }
     free(takenInput);
+}
+
+void rmvspc(char *str) {
+    int i = 0, j = 0;
+    
+    // Loop through the string
+    while (str[i]) {
+        // If the current character is not a space, copy it to the new position
+        if (str[i] != ' ') {
+            str[j++] = str[i];
+        }
+        i++;
+    }
+    
+    // Null-terminate the string after the last character
+    str[j] = '\0';
 }
