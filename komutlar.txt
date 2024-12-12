@@ -12,12 +12,22 @@ yeniSatir: ekrana boş bir satır yazdırır
 deger: ilk önce değerin adı yazılır, sonrasında da değere verilmek istenen değer yazılır.
 Örnek:
 
-deger sayi "1+2" --- sayi == 3
+deger sayi "1+2" -> sayi == 3
 
 sonrasında da iki noktalı virgülün arasına değerin adı koyularak çağırılır.
 Örnek:
 
-yazdir ";sayi;" --- 3
+yazdir ";sayi;" -> 3
+(;'nın arkasına % koyarak sadece degerin adını da yazabilirsiniz)
+
+yeniDeger: hâli hazırda atanmış bir değerin değerini (variable'nin value'sini) değiştirmek için kullanılır.
+Örnek:
+
+deger test "1++"
+yazdir ";test;" -> 2
+
+yeniDeger test "2++"
+yazdir ";test;" -> 3
 
 girdiAl: alınacak girdiyi bir değere atar.
 
@@ -25,14 +35,24 @@ matematik işlemleri: bir sayıdan sonra işlemin sembolü, sonrasında da ikinc
 Örnek:
 
 yazdir "25**2" -> 625 (karesi)
-yazdir "1++" -> 2     (increment)
-yazdir "2/2" -> 1     (bölme)
+yazdir "1++"   -> 2   (increment)
+yazdir "2/2"   -> 1   (bölme)
 
 Eğer işlem yapmadan sembol yazmak istiyorsanız, sembolden önce "%" işareti koyabilirsiniz.
 Örnek:
 
 yazdir "25 %+ 2" -> "25 + 2"
-yazdir "1%+%+" ->   "1++"
+yazdir "1%+%+"   -> "1++"
 
+fonksiyon ve kullan: Kendinize özel, istediğiniz zaman kullanabileceğiniz bir fonksiyon oluşturmanızı sağlar.
+Örnek:
+
+fonksiyon topla(sayi1, sayi2){
+    yazdir ";sayi1;+;sayi2;"
+}
+
+kullan topla("12", "25") -> 37
+
+temizle: ekrandaki tüm yazıyı temizler.
 çıkış: programdan dilediğiniz zaman çıkmanızı sağlar.
 hataİleÇıkış: bir hata yazısı ile programdan çıkmanızı sağlar.
