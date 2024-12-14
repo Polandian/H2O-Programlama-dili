@@ -284,7 +284,7 @@ void COMPILE(char *compileFile, int funcMode){
                     
                     //trying to find a function
                     
-                    while(strcmp(readFunc+1, "yazdir") != 0 && strcmp(readFunc+1, "dosyayaEkle") != 0 && strcmp(readFunc+1, "dosyayaYaz") != 0 && strcmp(readFunc+1, "cikis") != 0 && strcmp(readFunc+1, "hataIleCikis") && strcmp(readFunc+1, ":q") != 0 && strcmp(readFunc+1, "dosyaOku") != 0 && strcmp(readFunc+1, "satirOku") != 0 && strcmp(readFunc+1, "yeniSatir") != 0 && strcmp(readFunc+1, "girdiAl") != 0 && strcmp(readFunc+1, "deger") != 0 && strcmp(readFunc+1, "ekle") != 0 && strcmp(readFunc+1, "yeniDeger") != 0 && strcmp(readFunc+1, "temizle") != 0 && strcmp(readFunc+1, "fonksiyon") != 0 && strcmp(readFunc+1, "silDeger") != 0 && strcmp(readFunc+1, "kullan") != 0){ 
+                    while(strcmp(readFunc+1, "yazdir") != 0 && strcmp(readFunc+1, "dosyayaEkle") != 0 && strcmp(readFunc+1, "dosyayaYaz") != 0 && strcmp(readFunc+1, "cikis") != 0 && strcmp(readFunc+1, "hataIleCikis") && strcmp(readFunc+1, ":q") != 0 && strcmp(readFunc+1, "dosyaOku") != 0 && strcmp(readFunc+1, "satirOku") != 0 && strcmp(readFunc+1, "yeniSatir") != 0 && strcmp(readFunc+1, "girdiAl") != 0 && strcmp(readFunc+1, "deger") != 0 && strcmp(readFunc+1, "ekle") != 0 && strcmp(readFunc+1, "yeniDeger") != 0 && strcmp(readFunc+1, "temizle") != 0 && strcmp(readFunc+1, "fonksiyon") != 0 && strcmp(readFunc+1, "silDeger") != 0 && strcmp(readFunc+1, "kullan") != 0 && strcmp(readFunc+1, "eger") != 0){ 
                         if(currentLineChar > strlen(currentLine)){break;}
                         //if no function is found until the end of the line, give no function error
                         currentLineChar++;
@@ -296,7 +296,7 @@ void COMPILE(char *compileFile, int funcMode){
                     if(strcmp(readFunc+1, "yazdir") == 0){
                         currentLineChar++;
                         currentBuffer = currentLine[currentLineChar];
-                        while(currentBuffer != '"' && currentLineChar < sizeof(currentLine)){
+                        while(currentBuffer != '"' && currentLineChar < strlen(currentLine)){
                             currentLineChar++;
                             currentBuffer = currentLine[currentLineChar];
                         }
@@ -310,7 +310,7 @@ void COMPILE(char *compileFile, int funcMode){
                         readStr[1] = currentBuffer;
                         readStr[0] = ' ';
 
-                        while(currentBuffer != '"' && currentLineChar < sizeof(currentLine)){
+                        while(currentBuffer != '"' && currentLineChar < strlen(currentLine)){
                             currentLineChar++;
                             currentBuffer = currentLine[currentLineChar];
                                 
@@ -325,7 +325,7 @@ void COMPILE(char *compileFile, int funcMode){
                     else if(strcmp(readFunc+1, "dosyayaEkle") == 0 || strcmp(readFunc+1, "dosyayaYaz") == 0){
                         currentLineChar++;
                         currentBuffer = currentLine[currentLineChar];
-                        while(currentBuffer != '"' && currentLineChar < sizeof(currentLine)){
+                        while(currentBuffer != '"' && currentLineChar < strlen(currentLine)){
                             currentLineChar++;
                             currentBuffer = currentLine[currentLineChar];
                         }
@@ -336,7 +336,7 @@ void COMPILE(char *compileFile, int funcMode){
                         
                         readFileName[1] = currentBuffer;
                         readFileName[0] = ' ';
-                        while(currentBuffer != '"' && currentLineChar < sizeof(currentLine)){
+                        while(currentBuffer != '"' && currentLineChar < strlen(currentLine)){
                             currentLineChar++;
                             currentBuffer = currentLine[currentLineChar];
                                 
@@ -411,7 +411,7 @@ void COMPILE(char *compileFile, int funcMode){
                     else if(strcmp(readFunc+1, "dosyaOku") == 0){
                         currentLineChar++;
                         currentBuffer = currentLine[currentLineChar];
-                        while(currentBuffer != '"' && currentLineChar < sizeof(currentLine)){
+                        while(currentBuffer != '"' && currentLineChar < strlen(currentLine)){
                             currentLineChar++;
                             currentBuffer = currentLine[currentLineChar];
                         }
@@ -422,7 +422,7 @@ void COMPILE(char *compileFile, int funcMode){
                         
                         readFileName[1] = currentBuffer;
                         readFileName[0] = ' ';
-                        while(currentBuffer != '"' && currentLineChar < sizeof(currentLine)){
+                        while(currentBuffer != '"' && currentLineChar < strlen(currentLine)){
                             currentLineChar++;
                             currentBuffer = currentLine[currentLineChar];
                                 
@@ -739,6 +739,7 @@ void COMPILE(char *compileFile, int funcMode){
                         strcpy(functionNames[funcAmount], newFs+1);                        
                         strcpy(functionParameters[funcAmount], newVals+1);
                         readMode = 1;
+                        funcReading = 1;
                         funcAmount++; //REMEMBER WE INCREASE IT HERE BUT WHILE READING FOR THE FUNCTION WE DECREASE IT BY 1
                     }
 
@@ -890,16 +891,289 @@ void COMPILE(char *compileFile, int funcMode){
                         free(newFs);
                         free(newVl);
                     }
+
+                    else if(strcmp(readFunc+1, "eger") == 0){
+                        char *firstVal = malloc(BUFFER_SIZE);  //first value in comprension
+                        char *secondVal = malloc(BUFFER_SIZE); //second value in comprension
+                        char *compare = malloc(BUFFER_SIZE);   //comprension
+                        
+                        firstVal[0] = ' ';
+                        secondVal[0] = ' ';
+                        compare[0] = ' ';
+
+                        if(strlen(firstVal) > 1){
+                            firstVal[1] = '\0';
+                            firstVal[2] = '\0';
+                        }
+                        if(strlen(secondVal) > 1){
+                            secondVal[1] = '\0';
+                            secondVal[2] = '\0';
+                        }
+                        if(strlen(compare) > 1){
+                            compare[1] = '\0';
+                            compare[2] = '\0';
+                        }
+
+                        while(currentBuffer == ' '){
+                            if(currentLineChar>strlen(currentLine)){break;}
+                            currentLineChar++;
+                            currentBuffer = currentLine[currentLineChar];
+                        }
+                        if(currentBuffer != ' '){ //start reading first variable
+                            while(currentBuffer != ' '){
+                                if(currentLineChar>strlen(currentLine)){break;}
+                                append_char(firstVal, currentBuffer);
+                                currentLineChar++;
+                                currentBuffer = currentLine[currentLineChar];
+                            }
+                            if(currentBuffer == ' '){
+                                while(currentBuffer == ' '){
+                                    if(currentLineChar>strlen(currentLine)){break;}
+                                    currentLineChar++;
+                                    currentBuffer = currentLine[currentLineChar];
+                                }
+                                if(currentBuffer != ' '){ //start reading comprension
+                                    while(currentBuffer != ' '){
+                                        if(currentLineChar>strlen(currentLine)){break;}
+                                        append_char(compare, currentBuffer);
+                                        currentLineChar++;
+                                        currentBuffer = currentLine[currentLineChar];
+                                    }
+                                    if(currentBuffer == ' '){
+                                        while(currentBuffer == ' '){
+                                            if(currentLineChar>strlen(currentLine)){break;}
+                                            currentLineChar++;
+                                            currentBuffer = currentLine[currentLineChar];
+                                        }
+                                        if(currentBuffer != ' '){ //start reading second variable
+                                            while(currentBuffer != ' ' && currentBuffer != '{' && currentLineChar < strlen(currentLine)){
+                                                append_char(secondVal, currentBuffer);
+                                                currentLineChar++;
+                                                currentBuffer = currentLine[currentLineChar];
+                                            }
+                                            if(currentBuffer == ' ' || currentBuffer == '{' || currentLineChar == strlen(currentLine)){
+                                                //here, check if variables entered are variables or strings
+                                                if(firstVal[1] != '"'){
+                                                    int i = 0;
+                                                    while(i < varAmount){
+                                                        if(comparevar(varNames[i], firstVal+1) == 0){
+                                                            sprintf(firstVal+1, "%s", varValues[i]);
+                                                            break;
+                                                        }else{
+                                                            i++;
+                                                        }
+                                                    }
+                                                }
+                                                else if(firstVal[1] == '"'){
+                                                    remove_char(firstVal+1, '"');
+                                                }
+                                                if(secondVal[1] != '"'){
+                                                    int i = 0;
+                                                    while(i < varAmount){
+                                                        if(comparevar(varNames[i], secondVal+1) == 0){
+                                                            sprintf(secondVal+1, "%s", varValues[i]);
+                                                            break;
+                                                        }else{
+                                                            i++;
+                                                        }
+                                                    }
+                                                }
+                                                else if(secondVal[1] == '"'){
+                                                    remove_char(secondVal+1, '"');
+                                                }
+                                                if(secondVal[strlen(secondVal) - 1] == '\n'){
+                                                    secondVal[strlen(secondVal) - 1] = '\0';
+                                                }
+
+                                                if(strcmp(compare+1, "esittir") == 0){
+                                                    if(atoi(firstVal+1) == 0 && strcmp(firstVal+1, "0") == 0 && atoi(secondVal+1) == 0 && strcmp(secondVal+1, "0") == 0){
+                                                        if(atoi(firstVal+1) == atoi(secondVal+1)){
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 0;
+                                                        }else{
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 2;
+                                                        }
+                                                    }else if(atoi(firstVal+1) != 0 || atoi(secondVal+1) != 0){
+                                                        if(atoi(firstVal+1) == atoi(secondVal+1)){
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 0;
+                                                        }else{
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 2;
+                                                        }
+                                                    }
+                                                    else{
+                                                        if(strcmp(firstVal+1, secondVal+1) == 0){
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 0;
+                                                        }else{
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 2;
+                                                        }
+                                                    }
+                                                }
+                                                else if(strcmp(compare+1, "!esittir") == 0){
+                                                    if(atoi(firstVal+1) == 0 && strcmp(firstVal+1, "0") == 0 && atoi(secondVal+1) == 0 && strcmp(secondVal+1, "0") == 0){
+                                                        if(atoi(firstVal+1) != atoi(secondVal+1)){
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 0;
+                                                        }else{
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 2;
+                                                        }
+                                                    }else if(atoi(firstVal+1) != 0 || atoi(secondVal+1) != 0){
+                                                        if(atoi(firstVal+1) != atoi(secondVal+1)){
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 0;
+                                                        }else{
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 2;
+                                                        }   
+                                                    }
+                                                    else{
+                                                        if(strcmp(firstVal+1, secondVal+1) != 0){
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 0;
+                                                        }else{
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 2;
+                                                        }
+                                                    }
+                                                }
+                                                else if(strcmp(compare+1, "kucuktur") == 0){
+                                                    if(atoi(firstVal+1) == 0 && strcmp(firstVal+1, "0") == 0 && atoi(secondVal+1) == 0 && strcmp(secondVal+1, "0") == 0){
+                                                        if(atoi(firstVal+1) < atoi(secondVal+1)){
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 0;
+                                                        }else{
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 2;
+                                                        }
+                                                    }else if(atoi(firstVal+1) != 0 || atoi(secondVal+1) != 0){
+                                                        if(atoi(firstVal+1) < atoi(secondVal+1)){
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 0;
+                                                        }else{
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 2;
+                                                        }
+                                                    }
+                                                    else{
+                                                        if(funcReading == 1) readMode = 1;
+                                                        else readMode = 2;
+                                                    }
+                                                }
+                                                else if(strcmp(compare+1, "buyuktur") == 0){
+                                                    if(atoi(firstVal+1) == 0 && strcmp(firstVal+1, "0") == 0 && atoi(secondVal+1) == 0 && strcmp(secondVal+1, "0") == 0){
+                                                        if(atoi(firstVal+1) > atoi(secondVal+1)){
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 0;
+                                                        }else{
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 2;
+                                                        }
+                                                    }else if(atoi(firstVal+1) != 0 || atoi(secondVal+1) != 0){
+                                                        if(atoi(firstVal+1) > atoi(secondVal+1)){
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 0;
+                                                        }else{
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 2;
+                                                        }
+                                                    }
+                                                    else{
+                                                        if(funcReading == 1) readMode = 1;
+                                                        else readMode = 2;
+                                                    }
+                                                }
+                                                else if(strcmp(compare+1, "kucukesittir") == 0){
+                                                    if(atoi(firstVal+1) == 0 && strcmp(firstVal+1, "0") == 0 && atoi(secondVal+1) == 0 && strcmp(secondVal+1, "0") == 0){
+                                                        if(atoi(firstVal+1) <= atoi(secondVal+1)){
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 0;
+                                                        }else{
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 2;
+                                                        }
+                                                    }else if(atoi(firstVal+1) != 0 || atoi(secondVal+1) != 0){
+                                                        if(atoi(firstVal+1) <= atoi(secondVal+1)){
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 0;
+                                                        }else{
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 2;
+                                                        }
+                                                    }
+                                                    else{
+                                                        if(funcReading == 1) readMode = 1;
+                                                        else readMode = 2;
+                                                    }
+                                                }
+                                                else if(strcmp(compare+1, "buyukesittir") == 0){
+                                                    if(atoi(firstVal+1) == 0 && strcmp(firstVal+1, "0") == 0 && atoi(secondVal+1) == 0 && strcmp(secondVal+1, "0") == 0){
+                                                        if(atoi(firstVal+1) >= atoi(secondVal+1)){
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 0;
+                                                        }else{
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 2;
+                                                        }
+                                                    }else if(atoi(firstVal+1) != 0 || atoi(secondVal+1) != 0){
+                                                        if(atoi(firstVal+1) >= atoi(secondVal+1)){
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 0;
+                                                        }else{
+                                                            if(funcReading == 1) readMode = 1;
+                                                            else readMode = 2;
+                                                        }
+                                                    }
+                                                    else{
+                                                        if(funcReading == 1) readMode = 1;
+                                                        else readMode = 2;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        free(firstVal);
+                        free(secondVal);
+                        free(compare);
+                    }
                 }
             }
             
             else if(readMode == 1){
+                funcReading = 1;
                 if(currentBuffer != '}'){
                     strcat(functionVoid[funcAmount - 1], currentLine);
                 }
                 else{
+                    funcReading = 0;
                     readMode = 0;
                 }
+            }
+
+            else if(readMode == 2){
+                char *tmp = malloc(30);
+                tmp[0] = ' ';
+                tmp[1] = '\0';
+                tmp[2] = '\0';
+                while(currentBuffer != ' '){
+                    append_char(tmp, currentBuffer);
+                    currentLineChar++;
+                    currentBuffer = currentLine[currentLineChar];
+                }
+                if(strcmp(tmp+1, "bitir")){
+                    readMode = 0;
+                }else{
+                    readMode = 2;
+                }
+                free(tmp);
             }
         }
     
