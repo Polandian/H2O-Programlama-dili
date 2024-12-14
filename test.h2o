@@ -1,11 +1,27 @@
-fonksiyon test(yazi1, yazi2, yazi3, yazi4){
-    yazdir ";yazi1;"
-    yazdir ";yazi2;"
-    yazdir ";yazi3;"
-    yazdir ";yazi4;"
+fonksiyon test(sayi1, sayi2){
+    eger sayi1 esittir sayi2
+        yazdir "sayi1 == sayi2"
+    bitir
+
+    eger sayi1 !esittir sayi2
+        yazdir "sayi1 != sayi2"
+    bitir
+
+    eger sayi1 kucuktur sayi2
+        yazdir "sayi1 < sayi2"
+    bitir
+
+    eger sayi1 kucukesittir sayi2
+        yazdir "sayi1 <= sayi2"
+    bitir
+
+    eger sayi1 buyuktur sayi2
+        yazdir "sayi1 > sayi2"
+    bitir
+
+    eger sayi1 buyukesittir sayi2
+        yazdir "sayi1 >= sayi2"
+    bitir
 }
 
-deger test1 "1++" 
-deger test2 "2++"
-
-kullan test("sa as asd", "as", test1, test2)
+kullan test("12", "23")
