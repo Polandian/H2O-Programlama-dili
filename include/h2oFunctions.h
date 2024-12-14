@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <stdbool.h> //varAmount
+#include <stdbool.h>
 
 #define BUFFER_SIZE 256
 #define FILE_NOT_FOUND_ERROR "\033[0;31mHATA: ARANAN DOSYA BULUNAMADI\n\033[0m"
