@@ -29,7 +29,21 @@ yazdir ";test;" -> 2
 yeniDeger test "2++"
 yazdir ";test;" -> 3
 
+silDeger: atanmış değeri siler.
+Örnek:
+
+deger test "1++"
+yazdir ";test;" -> 2
+
+silDeger test
+yazdir ";test;" -> ;test;
+
 girdiAl: alınacak girdiyi bir değere atar.
+Örnek:
+
+deger test ""
+girdiAl test
+yazdir ";test;" <------ Kullanıcının girdiği değer burada gözükecek.
 
 matematik işlemleri: bir sayıdan sonra işlemin sembolü, sonrasında da ikinci sayı.
 Örnek:
@@ -45,13 +59,24 @@ yazdir "25 %+ 2" -> "25 + 2"
 yazdir "1%+%+"   -> "1++"
 
 fonksiyon ve kullan: Kendinize özel, istediğiniz zaman kullanabileceğiniz bir fonksiyon oluşturmanızı sağlar.
+NOT: Fonksiyon isimleriyle deger isimlerini aynı tutmamanız önerilir.
 Örnek:
 
 fonksiyon topla(sayi1, sayi2){
     yazdir ";sayi1;+;sayi2;"
-}
+} <--------------------------- Zorunlu. Yazılmadığı takdirde bütün program "topla" fonksiyonuna dahil edilir.
 
 kullan topla("12", "25") -> 37
+
+eger: verilen koşul eğer doğruysa kodu çalıştırır, değilse kodu atlar.
+Örnek:
+
+deger test1 "2"
+deger test2 "3"
+
+eger test1 esittir test2
+    yazdir "ilk sayi ikinci sayiya esit!" <- koşul doğru olmadığı için herhangi bir şey yazdırmayacak.
+bitir <---------------------- Zorunlu. Yazılmadığı taktirde tüm programı koşulun içine dahil eder.
 
 temizle: ekrandaki tüm yazıyı temizler.
 çıkış: programdan dilediğiniz zaman çıkmanızı sağlar.
