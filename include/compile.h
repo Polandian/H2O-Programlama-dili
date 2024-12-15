@@ -54,9 +54,8 @@ void COMPILE(char *compileFile, int funcMode){
                 currentLineChar++;
                 currentBuffer = currentLine[currentLineChar];
             }
-
-
-            if(readMode == 0){
+			
+			if(readMode == 0){
                 int b = 0;
                 int s = 0;
                 int k = 0; /*değer okuyucu*/
@@ -376,7 +375,7 @@ void COMPILE(char *compileFile, int funcMode){
                     }
 
                     else if(strcmp(readFunc+1, "cikis") == 0 || strcmp(readFunc+1, ":q") == 0){
-                        CLOSE_APP("\n\nUygulamadan cikiliyor...", 0);
+                        CLOSE_APP("\n\n\n\n\e[44mUygulamadan Cikiliyor...\033[0m\e[0m", 0);
                     }
 
                     else if(strcmp(readFunc+1, "hataIleCikis") == 0){
@@ -402,8 +401,8 @@ void COMPILE(char *compileFile, int funcMode){
                                 
                             currentFuncChar++;
                             readStr[currentFuncChar] = currentBuffer;
-                        }
-                        readStr[currentFuncChar] = '\0';
+                        } 
+                        readStr[currentFuncChar] = '\0'; 
                         system("cls");
                         CLOSE_APP(readStr+1 , 1);
                     }
@@ -738,6 +737,7 @@ void COMPILE(char *compileFile, int funcMode){
                         
                         strcpy(functionNames[funcAmount], newFs+1);                        
                         strcpy(functionParameters[funcAmount], newVals+1);
+                        functionVoid[funcAmount][0] = '\0';
                         readMode = 1;
                         funcReading = 1;
                         funcAmount++; //REMEMBER WE INCREASE IT HERE BUT WHILE READING FOR THE FUNCTION WE DECREASE IT BY 1
@@ -764,8 +764,6 @@ void COMPILE(char *compileFile, int funcMode){
                             currentBuffer = currentLine[currentLineChar];
                         }
                                 
-                        //run this after the while is executed
-                            
                         currentBuffer = currentLine[currentLineChar];
                         append_char(newFs, currentBuffer);
                         while(currentBuffer != ' ' && currentBuffer != '('){
@@ -791,7 +789,7 @@ void COMPILE(char *compileFile, int funcMode){
                             }
                             int h = 0;
                             for(; h < funcAmount+1; h++){
-                                if(strcmp(newFs+1, functionNames[h]) == 0){
+                                if(strcmp(newFs+1, functionNames[h]) == 0 || strcmp(newFs+1, "satirKaydet") == 0 || strcmp(newFs+1, "dosyaKaydet") == 0){
                                     break;
                                 }
                             }
@@ -869,7 +867,7 @@ void COMPILE(char *compileFile, int funcMode){
                                 
                                 for(int u = 0; u < varamt; u++){ //removes all temporary variables created
                                     char *tmp = malloc(BUFFER_SIZE);
-                                    sprintf(tmp, "silDeger %s\n", spred[u]);
+                                sprintf(tmp, "silDeger %s\n", spred[u]);
                                     fprintf(temporaryFunctionFile, tmp);
                                     free(tmp);
                                 }
@@ -891,7 +889,7 @@ void COMPILE(char *compileFile, int funcMode){
                         free(newFs);
                         free(newVl);
                     }
-
+    
                     else if(strcmp(readFunc+1, "eger") == 0){
                         char *firstVal = malloc(BUFFER_SIZE);  //first value in comprension
                         char *secondVal = malloc(BUFFER_SIZE); //second value in comprension
@@ -1163,12 +1161,12 @@ void COMPILE(char *compileFile, int funcMode){
                 tmp[0] = ' ';
                 tmp[1] = '\0';
                 tmp[2] = '\0';
-                while(currentBuffer != ' '){
+                while(currentBuffer != ' ' && currentBuffer != '\n'){
                     append_char(tmp, currentBuffer);
                     currentLineChar++;
                     currentBuffer = currentLine[currentLineChar];
                 }
-                if(strcmp(tmp+1, "bitir")){
+                if(strcmp(tmp+1, "bitir") == 0){
                     readMode = 0;
                 }else{
                     readMode = 2;
