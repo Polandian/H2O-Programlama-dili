@@ -1,3 +1,5 @@
+#: satırın başına koyulduğu taktirde o satır atlanır ve bir yorum (comment) sayılır.
+
 yazdır: konsola yazı yazdırır
 
 ekle: başka bir h2o dosyasını şimdiki dosyaya ekler
