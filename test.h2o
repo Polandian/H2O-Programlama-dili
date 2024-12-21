@@ -1,27 +1,40 @@
-fonksiyon test(sayi1, sayi2){
-    eger sayi1 esittir sayi2
-        yazdir "sayi1 == sayi2"
-    bitir
+deger test "1"
+deger soru ""
+deger sonuc ""
+deger sayi1 ""
+deger sayi2 ""
+deger islem ""
 
-    eger sayi1 !esittir sayi2
-        yazdir "sayi1 != sayi2"
-    bitir
-
-    eger sayi1 kucuktur sayi2
-        yazdir "sayi1 < sayi2"
-    bitir
-
-    eger sayi1 kucukesittir sayi2
-        yazdir "sayi1 <= sayi2"
-    bitir
-
-    eger sayi1 buyuktur sayi2
-        yazdir "sayi1 > sayi2"
-    bitir
-
-    eger sayi1 buyukesittir sayi2
-        yazdir "sayi1 >= sayi2"
-    bitir
+#ana fonksiyon
+fonksiyon mat(var, text){
+    temizle
+    yazdir ";text;"
+    girdiAl ;var;
 }
 
-kullan test("12", "23")
+#girişte soru sorup cevaba göre programı çalıştırır
+yazdir "Merhaba! Ne islem yapmak istersiniz?"
+yazdir "(matematik%/oyun)"
+girdiAl soru
+
+#kullanıcı matematiği seçerse
+eger soru esittir "matematik"  
+    kullan mat("sayi1", "Tamam! Islemin ilk sayisini girin!")
+    kullan mat("sayi2", "Tamam! Islemin ikinci sayisini girin!")
+    kullan mat("islem", "Tamam! Islemi girin!")
+    
+    temizle
+    
+    yeniDeger sonuc ";sayi1;;islem;;sayi2;"
+    
+    yazdir "Sonuc:"
+    yazdir ";sonuc;"
+    :q
+bitir
+
+#kullanici oyunu seçerse
+eger soru esittir "oyun"
+
+bitir
+
+hataIleCikis "Yanlis girdi"
